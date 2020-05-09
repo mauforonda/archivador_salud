@@ -1,0 +1,23 @@
+Script para archivar imágenes publicadas por el Ministerio de Salud de Bolivia en twitter
+
+Puedes ver las imágenes [[https://archive.org/details/%2540mauforonda?&sort=-titleSorter][acá]].
+
+No existen fuentes de datos estructurados confiables sobre la pandemia del covid19 en Bolivia. La [[https://boliviasegura.agetic.gob.bo/wp-content/json/api.php][única fuente oficial]] deja de actualizar datos sin previo aviso y muchos de los datos que sí actualiza son inconsistentes con aquellos de otras fuentes oficiales no estructuradas. Es claro que muchas instituciones del Estado no son capaces o están interesadas en publicar datos abiertos. Lo que si es consistente es su participación en redes sociales, publicando información de interés público en imágenes. Esta práctica de comunicación tiene varios defectos, en particular la información es difcícil de extraer para otros usos y está limitada por los intereses de la empresa que provee el servicio de redes sociales y las dinámicas sociales en el medio. Para compensar por estos límites y los riesgos que representan, he decidido archivar estas imágenes en el Internet Archive, una institución con una política más amigable a información de valor público. Mi expectativa es que sea un recurso útil para aquellos que quieran construir una narrativa de la pandemia en Bolivia. 
+
+Para ver la situación de datos estructurados recomiendo visitar mi archivo de los datos oficiales [[https://github.com/mauforonda/covid19-bolivia][acá]].
+
+Para correr este script en otra institución, debes copiar e ingresar tus credenciales para usar el api de twitter y el internet archive:
+
+#+begin_src sh
+ cp credentials.example.json credentials.json
+ vim credentials.json
+#+end_src
+
+y editar datos de la cuenta de twitter que desear archivar en =backup.py=
+
+#+begin_src python
+ institution = {'twitter_handle': 'minsaludbolivia',
+                'name': 'Ministerio de Salud de Bolivia'}
+#+end_src
+
+Por defecto, la primera vez archivará imágenes en las primeras 200 publicaciones. En futuras ocasiones sólo archivará imágenes en las primeras 200 publicaciones desde la última vez.
