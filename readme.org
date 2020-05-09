@@ -13,6 +13,12 @@ Para correr este script en otra institución, debes copiar e ingresar tus creden
  vim credentials.json
 #+end_src
 
+instalar las dependencias
+
+#+begin_src sh
+ pip install -r requirements.txt
+#+end_src
+
 y editar datos de la cuenta de twitter que desear archivar en =backup.py=
 
 #+begin_src python
