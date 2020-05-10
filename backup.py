@@ -26,17 +26,18 @@ def get_images(timeline):
         images = [img['media_url_https'] for img in tweet._json['extended_entities']['media'] if img['type'] == 'photo']
     if len(images) != 0:
       created_at = dt.datetime.strptime(tweet._json['created_at'], '%a %b %d %H:%M:%S %z %Y').astimezone(dt.timezone(-dt.timedelta(hours=4)))
-      tweets.append([created_at, images])
+      tweet_id = tweet._json['id_str']
+      tweets.append([created_at, images, tweet_id])
   return tweets
 
 def save_last(timeline):
   with open('last', 'w+') as f:
     f.write(str(timeline[0].id))
 
-def upload(access, secret, image_name, extension, image, tweet_date, user):
+def upload(access, secret, image_name, extension, image, tweet_date, user, tweet_id):
   u = ia.upload(image_name,
                 {'{i}.{e}'.format(i=image_name, e=extension): image},
-                metadata = {'title': image_name, 'mediatype': 'image', 'date': tweet_date, 'creator': user['name'], 'source': 'https://twitter.com/{}'.format(user['twitter_handle'])},
+                metadata = {'title': image_name, 'mediatype': 'image', 'date': tweet_date, 'creator': user['name'], 'source': 'https://twitter.com/{u}/status/{i}'.format(u=user['twitter_handle'], i=tweet_id)},
                 access_key=access,
                 secret_key=secret)
   return u
@@ -53,13 +54,14 @@ def archive(auth_ia, user, tweets):
   for ntweet, tweet in enumerate(tweets):
     tweet_name = tweet[0].strftime('{}_%Y-%m-%d_%H-%M-%S'.format(user['twitter_handle']))
     tweet_date = tweet[0].strftime('%Y-%m-%d')
+    tweet_id = tweet[2]
     print(str(ntweet) + ": " + tweet_name)
     for n, url in enumerate(tweet[1]):
       extension = url.split('.')[-1]
       image_name = '{f}_{n}'.format(f=tweet_name,n=n)
       image = BytesIO(requests.get(url).content)
       print('image downloaded')
-      u = upload(access, secret, image_name, extension, image, tweet_date, user)
+      u = upload(access, secret, image_name, extension, image, tweet_date, user, tweet_id)
       if u[0].status_code == 200:
         print('uploaded')
       else:
