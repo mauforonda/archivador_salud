@@ -12,7 +12,7 @@ idna==2.9
 internetarchive==1.9.3
 jsonpatch==1.25
 jsonpointer==2.0
-lxml==4.5.0
+lxml==4.6.3
 oauthlib==3.1.0
 python-twitter==3.5
 requests==2.23.0
